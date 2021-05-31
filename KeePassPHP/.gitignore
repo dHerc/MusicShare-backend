@@ -1,0 +1,6 @@
+/keepassphp/data/db
+/keepassphp/data/key
+/keepassphp/data/kphpdb
+sftp-config.json
+test.kdbx
+test.key
