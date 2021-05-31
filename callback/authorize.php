@@ -64,17 +64,20 @@ function getAccessToken($authorization_code) {
     curl_close($ch);
  
     if ($tokenResult === false || $resultCode !== 200) {
-		file_put_contents("tokens.csv","error");
-        exit ("Something went wrong $resultCode $tokenResult");
+		header("Location: /error.php?error=".$resultCode.$tokenResult);
+		exit();
     }
-    return "&access_token=".json_decode($tokenResult)->access_token . "&refresh_token=" . json_decode($tokenResult)->refresh_token;
+	$_SESSION["access_token"]=json_decode($tokenResult)->access_token;
+	$_SESSION["refresh_token"]=json_decode($tokenResult)->refresh_token;
+    return;
 }
  
 
 function main(){
     if ($_GET["code"]) {
         $tokens = getAccessToken($_GET["code"]);
-		header("Location:" . "/save.php?useer=".$_SESSION["userID"]."&type=".$type.$tokens);
+		$_SESSION["type"] = $type;
+		header("Location:/save.php");
 		exit();
     } else {    
         getAuthorizationCode();
