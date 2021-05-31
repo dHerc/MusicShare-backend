@@ -40,7 +40,6 @@
 					$_SESSION['login'] = $wiersz['login'];
 					$_SESSION['email'] = $wiersz['email'];
 					
-					unset($_SESSION['blad']);
 					$rezultat->free_result();
 					header('Location: main.php');
 				}
