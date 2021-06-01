@@ -50,7 +50,7 @@
 		user_id INT(6) NOT NULL,
 		type TEXT NOT NULL,
 		access_token TEXT NOT NULL,
-		refresh_token TEXT NOT NULL,
+		refresh_token TEXT,
 		FOREIGN KEY (user_id) REFERENCES users(id)
 		);";
 		if($conn->query($sql) == TRUE){

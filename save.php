@@ -6,6 +6,7 @@
 		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
 		{
 			header('Location: index.php');
+			exit();
 		}
 	
 	$user = $_SESSION['userID'];
@@ -22,7 +23,8 @@
 	
 	if ($conn->connect_errno!=0)
 	{
-		die("Connection failed: ".$conn->connect_error);
+		header("Location: /error.php?error=".$conn->error());
+		exit();	
 	}
 	
 	$sql = "INSERT INTO tokens VALUES (NULL,".
@@ -30,10 +32,17 @@
 	
 	if($conn->query($sql) == true){
 		$successful_add = true;
+		unset($_SESSION['type']);
+		unset($_SESSION['access_token']);
+		unset($_SESSION['refresh_token']);
 	}
-	else{}
-	conn->close();
+	else{
+		header("Location: /error.php?error=".$conn->error());
+		exit();	
+	}
+	$conn->close();
 
 	header('Location: index.php');
+	exit();
 
 ?>
