@@ -3,6 +3,6 @@
 	$host = "localhost";
 	$db_user = "root";
 	$db_password = "";
-	$db_name = "spotify_api";
+	$db_name = "music_api";
 	
 ?>
