@@ -13,6 +13,11 @@
 	$type = $_SESSION['type'];
 	$access_token = $_SESSION['access_token'];
 	$refresh_token = $_SESSION['refresh_token'];
+
+	unset($_SESSION['userID']);
+	unset($_SESSION['type']);
+	unset($_SESSION['access_token']);
+	unset($_SESSION['refresh_token']);
 	
 	$successful_add = false;
 	
@@ -32,9 +37,6 @@
 	
 	if($conn->query($sql) == true){
 		$successful_add = true;
-		unset($_SESSION['type']);
-		unset($_SESSION['access_token']);
-		unset($_SESSION['refresh_token']);
 	}
 	else{
 		header("Location: /error.php?error=".$conn->error());
