@@ -24,10 +24,10 @@ if($db!=null)
 		$password = substr($password,1,strlen($password)-2);
 		file_put_contents("auth.cred",$title.";".$username.";".$password.";".PHP_EOL,FILE_APPEND);
 	}
-	echo "Prepared successfully";
+	echo "Prepared credentials successfully".PHP_EOL;
 }
 else
-	echo "Wrong password";
+	echo "Wrong password".PHP_EOL;
 
 	$DB_created = false;
 
@@ -40,7 +40,8 @@ else
 	{
 		die("Connection failed: ".$conn->connect_error);
 	}
-	
+	$reset = "DROP DATABASE music_api;";
+	$conn->query($reset);
 	$sql = "CREATE DATABASE music_api;";
 	if($conn->query($sql) == TRUE){
 		

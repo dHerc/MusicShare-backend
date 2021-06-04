@@ -17,6 +17,7 @@ while(!feof($auth))
 		define('CLIENT_SECRET', $data[2]);
 	}
 }
+fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
 	define('REDIRECT_URI', 'http://localhost/callback/spotify.php'); // wprowadź redirect_uri
@@ -69,6 +70,7 @@ function getAccessToken($authorization_code) {
     }
 	$_SESSION["access_token"]=json_decode($tokenResult)->access_token;
 	$_SESSION["refresh_token"]=json_decode($tokenResult)->refresh_token;
+	$_SESSION["type"] = htmlspecialchars($_GET["type"]);
     return;
 }
  
@@ -76,8 +78,7 @@ function getAccessToken($authorization_code) {
 function main(){
     if ($_GET["code"]) {
         $tokens = getAccessToken($_GET["code"]);
-		$_SESSION["type"] = $type;
-		header("Location:/save.php");
+		header("Location:/save.php?mode=redirect");
 		exit();
     } else {    
         getAuthorizationCode();
