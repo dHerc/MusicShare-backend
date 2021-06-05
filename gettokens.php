@@ -12,7 +12,7 @@ if ($conn->connect_errno!=0)
 	exit();	
 }
 
-$sql = "SELECT access_token,refresh_token FROM tokens WHERE user_id ='".$userID."' AND type = '".$type."';";
+$sql = "SELECT access_token FROM tokens WHERE user_id ='".$userID."' AND type = '".$type."';";
 
 $result = $conn->query($sql);
 if($result == false)
@@ -21,11 +21,6 @@ if($result == false)
 	exit();	
 }
 $conn->close();
-$row = $result->fetch_row();
-$access_token = $row[0];
-$refresh_token = $row[1];
-$response = array();
-$response["access_token"]=$access_token;
-$response["refresh_token"]=$refresh_token;
-echo json_encode($response);
+$access_token = $result->fetch_row()[0];
+echo $access_token;
 ?>
