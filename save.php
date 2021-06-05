@@ -34,6 +34,7 @@
 	
 	$sql = "INSERT INTO tokens VALUES (NULL,'".
 	$user."','".$type."','".$access_token."','".$refresh_token."')";
+	echo $sql;
 	if($conn->query($sql) == true){
 		$successful_add = true;
 	}

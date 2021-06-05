@@ -3,19 +3,21 @@ session_start();
 if(isset($_POST["type"]))
 {
 	$type = json_encode($_POST["type"]);
-	$type = substr($type,1,strlen($type)-2);
+	$type = str_replace("\"","",$type);
 }
 else
 	$type = htmlspecialchars($_GET["type"]);
 if(isset($_POST["user"]))
 {
 	$userID = json_encode($_POST["user"]);
+	$userID = str_replace("\"","",$userID);
 	$_SESSION["userID"]=$userID;
 }
 if(isset($_POST["redirect_back"]))
 {
-	$userID = json_encode($_POST["redirect_back"]);
-	$_SESSION["redirect_back"]=$userID;
+	$redirect = json_encode($_POST["redirect_back"]);
+	$redirect = str_replace("\"","",$redirect);
+	$_SESSION["redirect_back"]=$redirect;
 }
 $auth = fopen("../auth.cred","r");
 while(!feof($auth))
@@ -31,7 +33,7 @@ while(!feof($auth))
 fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
-	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
+	define('REDIRECT_URI', 'http://localhost/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
 }
