@@ -43,10 +43,10 @@ if($db!=null)
 		$url = json_encode($item["StringFields"]["URL"]);
 		file_put_contents("connect.php",
 		"<?php".PHP_EOL .
-		"\$host = ".$url.PHP_EOL .";".
-		"\$db_user = ".$username.PHP_EOL .";".
-		"\$db_password = ".$password.PHP_EOL .";".
-		"\$db_name = ".$title.PHP_EOL .";".
+		"\$host = ".$url.";".PHP_EOL .
+		"\$db_user = ".";".$username.PHP_EOL .
+		"\$db_password = ".";".$password.PHP_EOL .
+		"\$db_name = ".$title.";".PHP_EOL .
 		"?>");
 	}
 	echo "Prepared db credentials successfully".PHP_EOL;
