@@ -1,16 +1,20 @@
 <?php
 session_start();
-$entityBody = file_get_contents('php://input');
-$parsedBody = json_encode($entityBody);
-$type = $parsedBody["type"];
-if(isset($parsedBody["user"]))
+if(isset($_POST["type"]))
 {
-	$userID = $parsedBody["user"];
+	$type = json_encode($_POST["type"]);
+	$type = substr($type,1,strlen($type)-2);
+}
+else
+	$type = htmlspecialchars($_GET["type"]);
+if(isset($_POST["user"]))
+{
+	$userID = json_encode($_POST["user"]);
 	$_SESSION["userID"]=$userID;
 }
-if(isset($parsedBody["redirect_back"]))
+if(isset($_POST["redirect_back"]))
 {
-	$userID = $parsedBody["redirect_back"];
+	$userID = json_encode($_POST["redirect_back"]);
 	$_SESSION["redirect_back"]=$userID;
 }
 $auth = fopen("../auth.cred","r");
