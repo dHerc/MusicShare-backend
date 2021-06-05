@@ -51,8 +51,11 @@ if($db!=null)
 	}
 	echo "Prepared db credentials successfully".PHP_EOL;
 }
-
-	require_once "connect.php";
+	echo $url;
+	$host = substr($url,1,strlen($url)-2);
+	$db_user = substr($username,1,strlen($username)-2);
+	$db_password = substr($password,1,strlen($password)-2);
+	$db_name = substr($title,1,strlen($title)-2);
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
 		
