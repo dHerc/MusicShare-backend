@@ -34,8 +34,8 @@
 	
 	$sql = "SELECT * FROM tokens WHERE user_id = '".$user."' AND type = '".$type."'";
 	if($conn->query($sql) == true){
-		$result = $conn->query(sql);
-		if($result->num_rows()>0)
+		$result = $conn->query($sql);
+		if($result->num_rows>0)
 			$sql = "UPDATE tokens SET access_token = '".$access_token."', 
 			refresh_token ='".$refresh_token."' WHERE user_id = '".$user."' AND type = '".$type."'";
 		else
