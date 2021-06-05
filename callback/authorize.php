@@ -1,10 +1,17 @@
 <?php
 session_start();
-$type = htmlspecialchars($_GET["type"]);
-if(isset($_GET["user"]))
+$entityBody = file_get_contents('php://input');
+$parsedBody = json_encode($entityBody);
+$type = $parsedBody["type"];
+if(isset($parsedBody["user"]))
 {
-	$userID = htmlspecialchars($_GET["user"]);
+	$userID = $parsedBody["user"];
 	$_SESSION["userID"]=$userID;
+}
+if(isset($parsedBody["redirect_back"]))
+{
+	$userID = $parsedBody["redirect_back"];
+	$_SESSION["redirect_back"]=$userID;
 }
 $auth = fopen("../auth.cred","r");
 while(!feof($auth))
@@ -20,13 +27,13 @@ while(!feof($auth))
 fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
-	define('REDIRECT_URI', 'http://localhost/callback/spotify.php'); // wprowadź redirect_uri
+	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
 }
 if(strcmp($type,"Genius")==0)
 {
-	define('REDIRECT_URI', 'http://localhost/callback/genius.php'); // wprowadź redirect_uri
+	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/genius.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://api.genius.com/oauth/authorize');
 	define('TOKEN_URL', 'https://api.genius.com/oauth/token');
 }
