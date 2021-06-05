@@ -43,6 +43,6 @@
 	}
 	$conn->close();
 	if(strcmp(htmlspecialchars($_GET['mode']),"redirect")==0)
-		header('Location: index.php');
+		header('Location: '.$_SESSION["redirect_back"]);
 	exit();
 ?>
