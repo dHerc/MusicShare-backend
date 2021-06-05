@@ -19,24 +19,21 @@ if(isset($_POST["redirect_back"]))
 	$redirect = str_replace("\"","",$redirect);
 	$_SESSION["redirect_back"]=$redirect;
 }
-$auth = fopen("../auth.cred","r");
-		
-fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
 	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
-	define('CLIENT_ID', getenv("spotifyID");
-	define('CLIENT_SECRET', getenv("spotifySecret");
+	define('CLIENT_ID', getenv("spotifyID"));
+	define('CLIENT_SECRET', getenv("spotifySecret"));
 }
 if(strcmp($type,"Genius")==0)
 {
 	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/genius.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://api.genius.com/oauth/authorize');
 	define('TOKEN_URL', 'https://api.genius.com/oauth/token');
-	define('CLIENT_ID', getenv("geniusID");
-	define('CLIENT_SECRET', getenv("geniusSecret");
+	define('CLIENT_ID', getenv("geniusID"));
+	define('CLIENT_SECRET', getenv("geniusSecret"));
 }
  
  
