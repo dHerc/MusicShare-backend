@@ -24,35 +24,40 @@ if($db!=null)
 		$password = substr($password,1,strlen($password)-2);
 		file_put_contents("auth.cred",$title.";".$username.";".$password.";".PHP_EOL,FILE_APPEND);
 	}
-	echo "Prepared successfully";
+	echo "Prepared credentials successfully".PHP_EOL;
 }
 else
-	echo "Wrong password";
+	echo "Wrong password".PHP_EOL;
 
-	$DB_created = false;
-
-	require_once "connect.php";
+$file = "db.kdbx";
+$db = KeePassPHP::openDatabaseFile($file, $ckey, $error);
+if($db!=null)
+{
+	$filter = new AllFilter();
+	$arr = $db->toArray($filter)["Groups"][0]["Entries"];
+	foreach($arr as $item)
+	{
+		$title = json_encode($item["StringFields"]["Title"]);
+		$username = json_encode($item["StringFields"]["UserName"]);
+		$password = json_encode($item["StringFields"]["Password"]);
+		$url = json_encode($item["StringFields"]["URL"]);
+		file_put_contents("connect.php",
+		"<?php".PHP_EOL .
+		"\$host = ".$url.PHP_EOL .";".
+		"\$db_user = ".$username.PHP_EOL .";".
+		"\$db_password = ".$password.PHP_EOL .";".
+		"\$db_name = ".$title.PHP_EOL .";".
+		"?>");
+	}
+	echo "Prepared db credentials successfully".PHP_EOL;
+}
+	echo $url;
+	$host = substr($url,1,strlen($url)-2);
+	$db_user = substr($username,1,strlen($username)-2);
+	$db_password = substr($password,1,strlen($password)-2);
+	$db_name = substr($title,1,strlen($title)-2);
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
-	$conn = new mysqli($host, $db_user, $db_password);
-	
-	if ($conn->connect_errno!=0)
-	{
-		die("Connection failed: ".$conn->connect_error);
-	}
-	
-	$sql = "CREATE DATABASE music_api;";
-	if($conn->query($sql) == TRUE){
-		
-		echo "Database created successfully </br>";
-		$DB_created = true;
-	}
-	else{
-		echo "Error creating database: ".$conn->error;
-	}
-	$conn->close();
-	
-	if($DB_created==true){
 		
 		$conn = new mysqli($host, $db_user, $db_password, $db_name);
 	
@@ -90,5 +95,4 @@ else
 		}
 		
 		$conn->close();
-	}
 ?>

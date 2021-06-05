@@ -1,10 +1,23 @@
 <?php
 session_start();
-$type = htmlspecialchars($_GET["type"]);
-if(isset($_GET["user"]))
+if(isset($_POST["type"]))
 {
-	$userID = htmlspecialchars($_GET["user"]);
+	$type = json_encode($_POST["type"]);
+	$type = str_replace("\"","",$type);
+}
+else
+	$type = htmlspecialchars($_GET["type"]);
+if(isset($_POST["user"]))
+{
+	$userID = json_encode($_POST["user"]);
+	$userID = str_replace("\"","",$userID);
 	$_SESSION["userID"]=$userID;
+}
+if(isset($_POST["redirect_back"]))
+{
+	$redirect = json_encode($_POST["redirect_back"]);
+	$redirect = str_replace("\"","",$redirect);
+	$_SESSION["redirect_back"]=$redirect;
 }
 $auth = fopen("../auth.cred","r");
 while(!feof($auth))
@@ -17,15 +30,16 @@ while(!feof($auth))
 		define('CLIENT_SECRET', $data[2]);
 	}
 }
+fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
-	define('REDIRECT_URI', 'http://localhost/callback/spotify.php'); // wprowadź redirect_uri
+	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
 }
 if(strcmp($type,"Genius")==0)
 {
-	define('REDIRECT_URI', 'http://localhost/callback/genius.php'); // wprowadź redirect_uri
+	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/genius.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://api.genius.com/oauth/authorize');
 	define('TOKEN_URL', 'https://api.genius.com/oauth/token');
 }
@@ -69,6 +83,7 @@ function getAccessToken($authorization_code) {
     }
 	$_SESSION["access_token"]=json_decode($tokenResult)->access_token;
 	$_SESSION["refresh_token"]=json_decode($tokenResult)->refresh_token;
+	$_SESSION["type"] = htmlspecialchars($_GET["type"]);
     return;
 }
  
@@ -76,8 +91,7 @@ function getAccessToken($authorization_code) {
 function main(){
     if ($_GET["code"]) {
         $tokens = getAccessToken($_GET["code"]);
-		$_SESSION["type"] = $type;
-		header("Location:/save.php");
+		header("Location:/save.php?mode=redirect");
 		exit();
     } else {    
         getAuthorizationCode();

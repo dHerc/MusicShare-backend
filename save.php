@@ -5,8 +5,8 @@
 	if(!isset($_SESSION['userID']) ||!isset($_SESSION['type']) ||
 		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
 		{
-			header('Location: index.php');
-			exit();
+			//header('Location: index.php');
+			//exit();
 		}
 	
 	$user = $_SESSION['userID'];
@@ -28,7 +28,7 @@
 	
 	if ($conn->connect_errno!=0)
 	{
-		header("Location: /error.php?error=".$conn->error());
+		header("Location: /error.php?error=".$conn->error);
 		exit();	
 	}
 	
@@ -51,11 +51,11 @@
 		$successful_add = true;
 	}
 	else{
-		header("Location: /error.php?error=".$conn->error());
+		header("Location: /error.php?error=".$conn->error);
 		exit();	
 	}
 	$conn->close();
-
-	header('Location: index.php');
+	if(strcmp(htmlspecialchars($_GET['mode']),"redirect")==0)
+		header('Location: '.$_SESSION["redirect_back"]);
 	exit();
 ?>
