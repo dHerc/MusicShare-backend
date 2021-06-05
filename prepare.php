@@ -51,12 +51,10 @@ if($db!=null)
 	}
 	echo "Prepared db credentials successfully".PHP_EOL;
 }
-	$DB_created = false;
 
 	require_once "connect.php";
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
-	if($DB_created==true){
 		
 		$conn = new mysqli($host, $db_user, $db_password, $db_name);
 	
@@ -94,5 +92,4 @@ if($db!=null)
 		}
 		
 		$conn->close();
-	}
 ?>
