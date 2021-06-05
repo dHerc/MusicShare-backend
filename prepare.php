@@ -42,7 +42,7 @@ if($db!=null)
 		$password = json_encode($item["StringFields"]["Password"]);
 		$url = json_encode($item["StringFields"]["URL"]);
 		file_put_contents("connect.php",
-		"<? php".PHP_EOL .
+		"<?php".PHP_EOL .
 		"\$host = ".$url.PHP_EOL .
 		"\$db_user = ".$username.PHP_EOL .
 		"\$db_password = ".$password.PHP_EOL .
