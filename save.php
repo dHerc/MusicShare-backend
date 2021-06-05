@@ -5,8 +5,8 @@
 	if(!isset($_SESSION['userID']) ||!isset($_SESSION['type']) ||
 		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
 		{
-			//header('Location: index.php');
-			//exit();
+			header("Location: /error.php?error=cannot find tokens");
+			exit();
 		}
 	
 	$user = $_SESSION['userID'];
@@ -56,6 +56,12 @@
 	}
 	$conn->close();
 	if(strcmp(htmlspecialchars($_GET['mode']),"redirect")==0)
-		header('Location: '.$_SESSION["redirect_back"]);
+	{
+		$redirect_url = $_SESSION["redirect_back"];
+		unset($_SESSION["redirect_back"]);
+		header('Location: '.$redirect_url);
+	}
+	else
+		echo $access_token;
 	exit();
 ?>

@@ -1,8 +1,7 @@
 <?php
 session_start();
-$type = htmlspecialchars($_GET["type"]);
-$userID = htmlspecialchars($_GET["user"]);
-
+$type = htmlspecialchars($_POST["type"]);
+$userID = htmlspecialchars($_POST["user"]);
 $auth = fopen("auth.cred","r");
 while(!feof($auth))
 {
@@ -49,6 +48,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $tokenResult = curl_exec($ch);
 $resultCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 if ($tokenResult === false || $resultCode !== 200) {
+		echo CLIENT_ID;
 		header("Location: /error.php?error=".$resultCode.$tokenResult);
 		exit();
     }
