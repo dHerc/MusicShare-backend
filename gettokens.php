@@ -22,6 +22,5 @@ if($result == false)
 	exit();	
 }
 $conn->close();
-$access_token = $result->fetch_row()[0];
-echo $access_token;
+echo $json_encode($result->fetch_row());
 ?>
