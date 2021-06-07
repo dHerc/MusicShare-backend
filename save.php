@@ -5,8 +5,7 @@
 	if(!isset($_SESSION['userID']) ||!isset($_SESSION['type']) ||
 		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
 		{
-			echo $_SESSION['userID'].PHP_EOL .$_SESSION['type'].PHP_EOL .$_SESSION['access_token'].PHP_EOL .$_SESSION['refresh_token'];
-			//header("Location: /error.php?error=cannot find tokens");
+			header("Location: /error.php?error=cannot find tokens");
 			exit();
 		}
 	
