@@ -80,7 +80,7 @@ function getAccessToken($authorization_code) {
     }
 	$_SESSION["access_token"]=json_decode($tokenResult)->access_token;
 	$_SESSION["refresh_token"]=json_decode($tokenResult)->refresh_token;
-	$_SESSION["type"] = htmlspecialchars($_GET["type"]);
+	$_SESSION["type"] = htmlspecialchars($_POST["type"]);
     return;
 }
  
