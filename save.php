@@ -2,7 +2,7 @@
 
 	session_start();
 	header("Access-Control-Allow-Origin: *");
-	if(!isset($_GET['userID']) ||!isset($_GET['type']) ||
+	if(!isset($_GET['user']) ||!isset($_GET['type']) ||
 		!isset($_GET['access_token']) ||!isset($_GET['refresh_token']))
 		{
 			header("Location: /error.php?error=cannot find tokens");
