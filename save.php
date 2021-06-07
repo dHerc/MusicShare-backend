@@ -1,7 +1,7 @@
 <?php
 
 	session_start();
-	
+	header("Access-Control-Allow-Origin: *");
 	if(!isset($_SESSION['userID']) ||!isset($_SESSION['type']) ||
 		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
 		{

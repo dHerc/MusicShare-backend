@@ -23,5 +23,7 @@ if($result == false)
 }
 $conn->close();
 $access_token = $result->fetch_row()[0];
-echo $access_token;
+$response = array();
+$response["access_token"] = $access_token;
+echo json_encode($response);
 ?>

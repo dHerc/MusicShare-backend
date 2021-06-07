@@ -34,7 +34,10 @@ while(!feof($auth))
 fclose($auth);
 if(strcmp($type,"Spotify")==0)
 {
-	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
+	if(isset($_POST["redirect_uri"]))
+		define('REDIRECT_URI', $_POST["redirect_uri"]);
+	else
+		define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
 }
@@ -90,8 +93,8 @@ function getAccessToken($authorization_code) {
  
 
 function main(){
-    if ($_GET["code"]) {
-        $tokens = getAccessToken($_GET["code"]);
+    if ($_POST["code"]) {
+        $tokens = getAccessToken($_POST["code"]);
 		header("Location:/save.php?mode=close");
 		exit();
     } else {    
