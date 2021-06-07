@@ -1,5 +1,4 @@
 <?php
-session_start();
 header("Access-Control-Allow-Origin: *");
 if(isset($_POST["type"]))
 {
@@ -55,7 +54,7 @@ function getAccessToken($authorization_code) {
 		header("Location: /error.php?error=".$resultCode.$tokenResult);
 		exit();
     }
-    return ("&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".json_decode($tokenResult)->refresh_token)
+    return ("&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".json_decode($tokenResult)->refresh_token);
 }
  
 
@@ -67,6 +66,8 @@ function main(){
 		header("Location:/save.php?mode=close&user=".$user.$tokens."&type=".$type);
 		exit();
     }
+	else
+		echo "error";
 }
  
 
