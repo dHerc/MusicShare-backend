@@ -25,5 +25,5 @@ $conn->close();
 $access_token = $result->fetch_row()[0];
 $response = array();
 $response["access_token"] = $access_token;
-echo $json_encode($response);
+echo json_encode($response);
 ?>
