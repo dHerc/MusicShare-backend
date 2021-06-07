@@ -84,7 +84,7 @@ function getAccessToken($authorization_code) {
 
 function main(){
     if ($_POST["code"]) {
-        $tokens = getAccessToken($_GET["code"]);
+        $tokens = getAccessToken($_POST["code"]);
 		header("Location:/save.php?mode=close");
 		exit();
     } else {    
