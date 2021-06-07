@@ -3,18 +3,16 @@ header("Access-Control-Allow-Origin: *");
 session_start();
 $type = htmlspecialchars($_POST["type"]);
 $userID = htmlspecialchars($_POST["user"]);
-$auth = fopen("auth.cred","r");
-while(!feof($auth))
+if(strcmp($type,"Spotify")==0)
 {
-	$cred = fgets($auth);
-	$data = explode(';',$cred);
-	if(strcmp($type,$data[0])==0)
-	{
-		define('CLIENT_ID', $data[1]);
-		define('CLIENT_SECRET', $data[2]);
-	}
+	define('CLIENT_ID', getenv("spotifyID"));
+	define('CLIENT_SECRET', getenv("spotifySecret"));
 }
-fclose($auth);
+if(strcmp($type,"Genius")==0)
+{
+	define('CLIENT_ID', getenv("geniusID"));
+	define('CLIENT_SECRET', getenv("geniusSecret"));
+}
 
 require_once "connect.php";
 mysqli_report(MYSQLI_REPORT_STRICT);
