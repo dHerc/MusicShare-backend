@@ -43,7 +43,9 @@
 					$_SESSION['email'] = $wiersz['email'];
 					
 					$rezultat->free_result();
-					header('Location: main.php');
+					$user_id = $_SESSION['id'];
+					header('Content-Type:application/json');
+					echo json_encode($user_id);
 				}
 				else 
 				{
