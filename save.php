@@ -9,7 +9,7 @@
 			exit();
 		}
 	
-	$user = $_GET['userID'];
+	$user = $_GET['user'];
 	$type = $_GET['type'];
 	$access_token = $_GET['access_token'];
 	$refresh_token = $_GET['refresh_token'];
