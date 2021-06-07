@@ -8,6 +8,20 @@ if(isset($_POST["type"]))
 }
 else
 	$type = htmlspecialchars($_GET["type"]);
+<<<<<<< HEAD
+$auth = fopen("../auth.cred","r");
+while(!feof($auth))
+{
+	$cred = fgets($auth);
+	$data = explode(';',$cred);
+	if(strcmp($type,$data[0])==0)
+	{
+		define('CLIENT_ID', $data[1]);
+		define('CLIENT_SECRET', $data[2]);
+	}
+}
+fclose($auth);
+=======
 if(isset($_POST["user"]))
 {
 	$userID = json_encode($_POST["user"]);
@@ -20,6 +34,7 @@ if(isset($_POST["redirect_back"]))
 	$redirect = str_replace("\"","",$redirect);
 	$_SESSION["redirect_back"]=$redirect;
 }
+>>>>>>> 6711c9279b78e1173a49d7ec8ee22c8b4c8c8a9d
 if(strcmp($type,"Spotify")==0)
 {
 	if(isset($_POST["redirect_uri"]))
@@ -78,17 +93,16 @@ function getAccessToken($authorization_code) {
 		header("Location: /error.php?error=".$resultCode.$tokenResult);
 		exit();
     }
-	$_SESSION["access_token"]=json_decode($tokenResult)->access_token;
-	$_SESSION["refresh_token"]=json_decode($tokenResult)->refresh_token;
-	$_SESSION["type"] = htmlspecialchars($_GET["type"]);
-    return;
+    return ("&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".json_decode($tokenResult)->refresh_token)
 }
  
 
 function main(){
     if ($_POST["code"]) {
         $tokens = getAccessToken($_POST["code"]);
-		header("Location:/save.php?mode=close");
+		$type = htmlspecialchars($_POST["type"]);
+		$user = $_POST["user"];
+		header("Location:/save.php?mode=close&user=".$user.$tokens."&type=".$type);
 		exit();
     } else {    
         getAuthorizationCode();
