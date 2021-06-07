@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 session_start();
 $type = htmlspecialchars($_POST["type"]);
 $userID = htmlspecialchars($_POST["user"]);

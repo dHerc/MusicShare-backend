@@ -1,7 +1,7 @@
 <?php
 
 	session_start();
-	
+	header("Access-Control-Allow-Origin: *");
 	if (isset($_POST['email']))
 	{
 		//Udana walidacja? Załóżmy, że tak!
