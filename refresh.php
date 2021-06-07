@@ -52,6 +52,6 @@ if ($tokenResult === false || $resultCode !== 200) {
 		exit();
     }
 curl_close($ch);
-header("Location:/save.php?mode=close&user=".$userID."&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".$refresh_token."&type=".$type");
+header("Location:/save.php?mode=close&user=".$userID."&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".$refresh_token."&type=".$type);
 exit();
 ?>
