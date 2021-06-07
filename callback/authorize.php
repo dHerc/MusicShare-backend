@@ -56,7 +56,7 @@ function getAccessToken($authorization_code) {
 		header("Location: /error.php?error=".$resultCode.$tokenResult);
 		exit();
     }
-    return ("&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".json_decode($tokenResult)->refresh_token)
+    return ("&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".json_decode($tokenResult)->refresh_token);
 }
  
 
