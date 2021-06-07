@@ -62,6 +62,10 @@
 		header('Location: '.$redirect_url);
 	}
 	else
-		echo $access_token;
+	{
+		$response = array();
+		$response["access_token"]=$access_token;
+		echo json_encode($response);
+	}
 	exit();
 ?>
