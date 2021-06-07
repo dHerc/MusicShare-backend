@@ -1,5 +1,7 @@
 <?php
 
+	header("Access-Control-Allow-Origin: *");
+
 	session_start();
 	
 	if((!isset($_POST['login'])) || (!isset($_POST['password'])))
@@ -41,7 +43,9 @@
 					$_SESSION['email'] = $wiersz['email'];
 					
 					$rezultat->free_result();
-					header('Location: main.php');
+					$user_id = $_SESSION['id'];
+					header('Content-Type:application/json');
+					echo json_encode($user_id);
 				}
 				else 
 				{
