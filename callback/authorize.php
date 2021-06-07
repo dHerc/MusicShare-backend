@@ -41,6 +41,7 @@ if(strcmp($type,"Genius")==0)
 function getAuthorizationCode() {
     $authorization_redirect_url = AUTH_URL . "?response_type=code&client_id=" 
     . CLIENT_ID . "&redirect_uri=" . REDIRECT_URI . "&prompt=confirm";
+	header("Access-Control-Allow-Origin: *");
 	header("Location:" . $authorization_redirect_url);
 	exit();
 }
