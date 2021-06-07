@@ -26,8 +26,6 @@ if(strcmp($type,"Genius")==0)
 	define('CLIENT_ID', getenv("geniusID"));
 	define('CLIENT_SECRET', getenv("geniusSecret"));
 }
- 
-
 function getCurl($headers, $content) {
     $ch = curl_init();
     curl_setopt_array($ch, array(
