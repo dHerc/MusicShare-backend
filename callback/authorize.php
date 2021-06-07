@@ -8,33 +8,6 @@ if(isset($_POST["type"]))
 }
 else
 	$type = htmlspecialchars($_GET["type"]);
-<<<<<<< HEAD
-$auth = fopen("../auth.cred","r");
-while(!feof($auth))
-{
-	$cred = fgets($auth);
-	$data = explode(';',$cred);
-	if(strcmp($type,$data[0])==0)
-	{
-		define('CLIENT_ID', $data[1]);
-		define('CLIENT_SECRET', $data[2]);
-	}
-}
-fclose($auth);
-=======
-if(isset($_POST["user"]))
-{
-	$userID = json_encode($_POST["user"]);
-	$userID = str_replace("\"","",$userID);
-	$_SESSION["userID"]=$userID;
-}
-if(isset($_POST["redirect_back"]))
-{
-	$redirect = json_encode($_POST["redirect_back"]);
-	$redirect = str_replace("\"","",$redirect);
-	$_SESSION["redirect_back"]=$redirect;
-}
->>>>>>> 6711c9279b78e1173a49d7ec8ee22c8b4c8c8a9d
 if(strcmp($type,"Spotify")==0)
 {
 	if(isset($_POST["redirect_uri"]))
