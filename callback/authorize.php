@@ -22,7 +22,10 @@ if(isset($_POST["redirect_back"]))
 }
 if(strcmp($type,"Spotify")==0)
 {
-	define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
+	if(isset($_POST["redirect_uri"]))
+		define('REDIRECT_URI', $_POST["redirect_uri"]);
+	else
+		define('REDIRECT_URI', 'https://musicshare-backend.herokuapp.com/callback/spotify.php'); // wprowadź redirect_uri
 	define('AUTH_URL', 'https://accounts.spotify.com/authorize');
 	define('TOKEN_URL', 'https://accounts.spotify.com/api/token');
 	define('CLIENT_ID', getenv("spotifyID"));
