@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 $type = htmlspecialchars($_GET["type"]);
 $userID = htmlspecialchars($_GET["user"]);
 require_once "connect.php";
