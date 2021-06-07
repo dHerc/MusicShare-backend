@@ -1,8 +1,5 @@
 <?php
-session_start();
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Methods: GET, POST');
-header("Access-Control-Allow-Headers: X-Requested-With");
 if(isset($_POST["type"]))
 {
 	$type = json_encode($_POST["type"]);
