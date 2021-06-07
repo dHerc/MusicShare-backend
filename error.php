@@ -1,5 +1,6 @@
 <?php
 session_start();
+header("Access-Control-Allow-Origin: *");
 echo $_GET["error"];
 if(isset($_SESSION["redirect_back"]))
 {
