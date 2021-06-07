@@ -75,7 +75,8 @@ function main(){
         $tokens = getAccessToken($_POST["code"]);
 		$type = htmlspecialchars($_POST["type"]);
 		$user = $_POST["user"];
-		header("Location:/save.php?mode=close&user=".$user.$tokens."&type=".$type);
+	    	echo "Location:/save.php?mode=close&user=".$user.$tokens."&type=".$type;
+		//header("Location:/save.php?mode=close&user=".$user.$tokens."&type=".$type);
 		exit();
     } else {    
         getAuthorizationCode();
