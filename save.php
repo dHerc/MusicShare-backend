@@ -2,22 +2,17 @@
 
 	session_start();
 	header("Access-Control-Allow-Origin: *");
-	if(!isset($_SESSION['userID']) ||!isset($_SESSION['type']) ||
-		!isset($_SESSION['access_token']) ||!isset($_SESSION['refresh_token']))
+	if(!isset($_GET['userID']) ||!isset($_GET['type']) ||
+		!isset($_GET['access_token']) ||!isset($_GET['refresh_token']))
 		{
 			header("Location: /error.php?error=cannot find tokens");
 			exit();
 		}
 	
-	$user = $_SESSION['userID'];
-	$type = $_SESSION['type'];
-	$access_token = $_SESSION['access_token'];
-	$refresh_token = $_SESSION['refresh_token'];
-
-	unset($_SESSION['userID']);
-	unset($_SESSION['type']);
-	unset($_SESSION['access_token']);
-	unset($_SESSION['refresh_token']);
+	$user = $_GET['userID'];
+	$type = $_GET['type'];
+	$access_token = $_GET['access_token'];
+	$refresh_token = $_GET['refresh_token'];
 	
 	$successful_add = false;
 	
@@ -55,17 +50,8 @@
 		exit();	
 	}
 	$conn->close();
-	if(strcmp(htmlspecialchars($_GET['mode']),"redirect")==0)
-	{
-		$redirect_url = $_SESSION["redirect_back"];
-		unset($_SESSION["redirect_back"]);
-		header('Location: '.$redirect_url);
-	}
-	else
-	{
-		$response = array();
-		$response["access_token"]=$access_token;
-		echo json_encode($response);
-	}
+	$response = array();
+	$response["access_token"]=$access_token;
+	echo json_encode($response);
 	exit();
 ?>
