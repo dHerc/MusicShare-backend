@@ -1,8 +1,6 @@
 <?php
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-
-$host = $url["host"];
-$db_user = $url["user"];
-$db_password = $url["pass"];
-$db_name = substr($url["path"], 1);
+$host = "eu-cdbr-west-01.cleardb.com";
+$db_user = "b54c9fb19f86b3";
+$db_password = "7b809f8b";
+$db_name = "heroku_1da3179c182a343";
 ?>

@@ -1,12 +1,11 @@
 <?php
-session_start();
-header("Access-Control-Allow-Origin: *");
-echo $_GET["error"];
-if(isset($_SESSION["redirect_back"]))
+function error($error,$errorCode)
 {
-	$redirect_url = $_SESSION["redirect_back"];
-	unset($_SESSION["redirect_back"]);
-	header("Location: ".$redirect_url."?error=".$_GET["error"]);
+	header("Access-Control-Allow-Origin: *");
+	http_response_code($errorCode);
+	$response = array();
+	$response["error"]=$error;
+	echo stripslashes(json_encode($response));
+	exit();
 }
-exit();
 ?>
