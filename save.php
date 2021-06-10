@@ -1,18 +1,15 @@
 <?php
-
+require "error.php";
+function save($user,$type,$access_token,$refresh_token)
+{
 	session_start();
 	header("Access-Control-Allow-Origin: *");
-	if(!isset($_GET['user']) ||!isset($_GET['type']) ||
-		!isset($_GET['access_token']) ||!isset($_GET['refresh_token']))
+	if(!isset($user) ||!isset($type) ||
+		!isset($access_token) ||!isset($refresh_token))
 		{
-			header("Location: /error.php?error=cannot find tokens");
+			error("cannot find tokens",500);
 			exit();
 		}
-	
-	$user = $_GET['user'];
-	$type = $_GET['type'];
-	$access_token = $_GET['access_token'];
-	$refresh_token = $_GET['refresh_token'];
 	
 	$successful_add = false;
 	
@@ -23,7 +20,7 @@
 	
 	if ($conn->connect_errno!=0)
 	{
-		header("Location: /error.php?error=".$conn->error);
+		error($conn->error,500);
 		exit();	
 	}
 	
@@ -38,7 +35,7 @@
 			$user."','".$type."','".$access_token."','".$refresh_token."')";
 	}
 	else{
-		header("Location: /error.php?error=".$conn->error());
+		error($conn->error(),500);
 		exit();	
 	}
 	
@@ -46,7 +43,7 @@
 		$successful_add = true;
 	}
 	else{
-		header("Location: /error.php?error=".$conn->error);
+		error($conn->error,404);
 		exit();	
 	}
 	$conn->close();
@@ -54,4 +51,5 @@
 	$response["access_token"]=$access_token;
 	echo json_encode($response);
 	exit();
+}
 ?>

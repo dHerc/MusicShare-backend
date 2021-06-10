@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+require "error.php";
 session_start();
 $type = htmlspecialchars($_POST["type"]);
 $userID = htmlspecialchars($_POST["user"]);
@@ -21,7 +22,7 @@ $conn = new mysqli($host, $db_user, $db_password, $db_name);
 
 if ($conn->connect_errno!=0)
 {
-	header("Location: /error.php?error=".$conn->error());
+	error($conn->error(),500);
 	exit();	
 }
 
@@ -30,7 +31,7 @@ $sql = "SELECT refresh_token FROM tokens WHERE user_id ='".$userID."' AND type =
 $result = $conn->query($sql);
 if($result == false)
 {
-	header("Location: /error.php?error=".$conn->error());
+	error($conn->error(),404);
 	exit();	
 }
 $conn->close();
@@ -47,11 +48,10 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $tokenResult = curl_exec($ch);
 $resultCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 if ($tokenResult === false || $resultCode !== 200) {
-		echo CLIENT_ID;
-		header("Location: /error.php?error=".$resultCode.$tokenResult);
+		error($tokenResult,$resultCode);
 		exit();
     }
 curl_close($ch);
-header("Location:/save.php?mode=close&user=".$userID."&access_token=".json_decode($tokenResult)->access_token."&refresh_token=".$refresh_token."&type=".$type);
+save($userID,$type,json_decode($tokenResult)->access_token,$refresh_token);
 exit();
 ?>
