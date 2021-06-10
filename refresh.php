@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-require "error.php";
+require "save.php";
 session_start();
 $type = htmlspecialchars($_POST["type"]);
 $userID = htmlspecialchars($_POST["user"]);
