@@ -44,8 +44,10 @@
 					
 					$rezultat->free_result();
 					$user_id = $_SESSION['id'];
+					$response = array();
+					$response['user_id']=$user_id;
 					header('Content-Type:application/json');
-					echo json_encode($user_id);
+					echo json_encode($response);
 				}
 				else 
 				{
