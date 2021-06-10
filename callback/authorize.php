@@ -71,6 +71,8 @@ function main(){
 		save($user,$type,$tokens["access_token"],$tokens["refresh_token"]);
 		exit();
     }
+	else
+		echo "error";
 }
  
 
