@@ -16,7 +16,7 @@ function save($user,$type,$access_token,$refresh_token)
 	
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
-	$conn = new mysqli($host, $db_user, $db_password, $db_name);
+	$conn = new mysqli($GLOBALS['host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
 	
 	if ($conn->connect_errno!=0)
 	{
