@@ -31,11 +31,16 @@ $sql = "SELECT refresh_token FROM tokens WHERE user_id ='".$userID."' AND type =
 $result = $conn->query($sql);
 if($result == false)
 {
-	error($conn->error(),404);
+	error($conn->error(),500);
 	exit();	
 }
 $conn->close();
 $refresh_token = $result->fetch_row()[0];
+if(!isset($refresh_token))
+{
+	error("no refresh tokens found",404);
+	exit();
+}
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'https://accounts.spotify.com/api/token');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
