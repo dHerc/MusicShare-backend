@@ -1,5 +1,6 @@
 <?php
-
+	
+	require "error.php";
 	session_start();
 	header("Access-Control-Allow-Origin: *");
 	if (isset($_POST['email']))
@@ -13,14 +14,14 @@
 		//Sprawdzenie długości nicka
 		if ((strlen($nick)<3) || (strlen($nick)>24))
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_nick']="Nick musi posiadać od 3 do 24 znaków!";
+			error("Nickname musi posiadać od 3 do 24 znaków!",400);
+			exit();
 		}
 		
 		if (ctype_alnum($nick)==false)
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_nick']="Nick może składać się tylko z liter i cyfr (bez polskich znaków)";
+			error("Nickname może składać się tylko z liter i cyfr (bez polskich znaków)",400);
+			exit();
 		}
 		
 		// Sprawdź poprawność adresu email
@@ -29,8 +30,8 @@
 		
 		if ((filter_var($emailB, FILTER_VALIDATE_EMAIL)==false) || ($emailB!=$email))
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_email']="Podaj poprawny adres e-mail!";
+			error("Podaj poprawny adres e-mail!",400);
+			exit();
 		}
 		
 		//Sprawdź poprawność hasła
@@ -39,23 +40,23 @@
 		
 		if ((strlen($password1)<8) || (strlen($password1)>24))
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_password']="Hasło musi posiadać od 8 do 24 znaków!";
+			error("Hasło musi posiadać od 8 do 24 znaków!",400);
+			exit();
 		}
 		
 		if ($password1!=$password2)
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_password']="Podane hasła nie są identyczne!";
+			error("Podane hasła nie są identyczne!",400);
+			exit();
 		}	
 
 		$haslo_hash = password_hash($password1, PASSWORD_DEFAULT);
 		
 		//Czy zaakceptowano regulamin?
-		if (!isset($_POST['regulamin']))
+		if (!isset($_POST['consent']))
 		{
-			$wszystko_OK=false;
-			$_SESSION['e_regulamin']="Potwierdź akceptację regulaminu!";
+			error("Potwierdź akceptację regulaminu!",400);
+			exit();
 		}				
 		
 		//Zapamiętaj wprowadzone dane
@@ -63,7 +64,7 @@
 		$_SESSION['fr_email'] = $email;
 		$_SESSION['fr_password1'] = $password1;
 		$_SESSION['fr_password2'] = $password2;
-		if (isset($_POST['regulamin'])) $_SESSION['fr_regulamin'] = true;
+		if (isset($_POST['consent'])) $_SESSION['fr_consent'] = true;
 		
 		require_once "connect.php";
 		mysqli_report(MYSQLI_REPORT_STRICT);
@@ -85,8 +86,9 @@
 				$ile_takich_maili = $rezultat->num_rows;
 				if($ile_takich_maili>0)
 				{
-					$wszystko_OK=false;
-					$_SESSION['e_email']="Istnieje już konto przypisane do tego adresu e-mail!";
+					error("Istnieje już konto przypisane do tego adresu e-mail!",400);
+					$polaczenie->close();
+					exit();
 				}		
 
 				//Czy nick jest już zarezerwowany?
@@ -97,8 +99,9 @@
 				$ile_takich_nickow = $rezultat->num_rows;
 				if($ile_takich_nickow>0)
 				{
-					$wszystko_OK=false;
-					$_SESSION['e_nick']="Istnieje już gracz o takim nicku! Wybierz inny.";
+					error("Istnieje już gracz o takim nicku! Wybierz inny.",400);
+					$polaczenie->close();
+					exit();
 				}
 				
 				if ($wszystko_OK==true)
@@ -107,8 +110,14 @@
 					
 					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$nick', '$haslo_hash', '$email')"))
 					{
-						$_SESSION['udanarejestracja']=true;
-						header('Location: witamy.php');
+						$rezultat = @$polaczenie->query(sprintf("SELECT * FROM users WHERE login='$nick'"));
+						$wiersz = $rezultat->fetch_assoc();
+						$user_id = $wiersz['id'];
+						$response = array();
+						$response['user_id']=$user_id;
+						$rezultat->free_result();
+						header('Content-Type:application/json');
+						echo json_encode($response);
 					}
 					else
 					{
@@ -123,115 +132,11 @@
 		}
 		catch(Exception $e)
 		{
-			echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
-			echo '<br />Informacja developerska: '.$e;
+			error($e,400);
+			exit();
 		}
 		
 	}
 	
 	
 ?>
-
-<!DOCTYPE HTML>
-<html lang="pl">
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Spotify - Api - Rejestracja!</title>
-	
-	<style>
-		.error
-		{
-			color:red;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-	</style>
-</head>
-
-<body>
-	
-	<form method="post">
-	
-		Nickname: <br /> <input type="text" value="<?php
-			if (isset($_SESSION['fr_nick']))
-			{
-				echo $_SESSION['fr_nick'];
-				unset($_SESSION['fr_nick']);
-			}
-		?>" name="nick" /><br />
-		
-		<?php
-			if (isset($_SESSION['e_nick']))
-			{
-				echo '<div class="error">'.$_SESSION['e_nick'].'</div>';
-				unset($_SESSION['e_nick']);
-			}
-		?>
-		
-		E-mail: <br /> <input type="text" value="<?php
-			if (isset($_SESSION['fr_email']))
-			{
-				echo $_SESSION['fr_email'];
-				unset($_SESSION['fr_email']);
-			}
-		?>" name="email" /><br />
-		
-		<?php
-			if (isset($_SESSION['e_email']))
-			{
-				echo '<div class="error">'.$_SESSION['e_email'].'</div>';
-				unset($_SESSION['e_email']);
-			}
-		?>
-		
-		Twoje hasło: <br /> <input type="password"  value="<?php
-			if (isset($_SESSION['fr_password1']))
-			{
-				echo $_SESSION['fr_password1'];
-				unset($_SESSION['fr_password1']);
-			}
-		?>" name="password1" /><br />
-		
-		<?php
-			if (isset($_SESSION['e_password']))
-			{
-				echo '<div class="error">'.$_SESSION['e_password'].'</div>';
-				unset($_SESSION['e_password']);
-			}
-		?>		
-		
-		Powtórz hasło: <br /> <input type="password" value="<?php
-			if (isset($_SESSION['fr_password2']))
-			{
-				echo $_SESSION['fr_password2'];
-				unset($_SESSION['fr_password2']);
-			}
-		?>" name="password2" /><br />
-		
-		<label>
-			<input type="checkbox" name="regulamin" <?php
-			if (isset($_SESSION['fr_regulamin']))
-			{
-				echo "checked";
-				unset($_SESSION['fr_regulamin']);
-			}
-				?>/> Akceptuję regulamin
-		</label>
-		
-		<?php
-			if (isset($_SESSION['e_regulamin']))
-			{
-				echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
-				unset($_SESSION['e_regulamin']);
-			}
-		?>	
-		
-		<br />
-		
-		<input type="submit" value="Zarejestruj się" />
-		
-	</form>
-
-</body>
-</html>

@@ -1,22 +1,25 @@
 <?php
 
+	require "error.php";
+
 	header("Access-Control-Allow-Origin: *");
 
 	session_start();
 	
 	if((!isset($_POST['login'])) || (!isset($_POST['password'])))
 	{
-		header('Location: index.php');
+		error("No login or password set",400);
 		exit();
 	}
 
-	require_once"connect.php";
+	require_once "connect.php";
 	
 	$polaczenie = @new mysqli($host,$db_user,$db_password,$db_name);
 	
 	if($polaczenie->connect_errno!=0)
 	{
-		echo "Error".$polaczenie->connect_errno;
+		error($polaczenie->connect_errno,500);
+		exit();
 	}
 	else
 	{
@@ -37,28 +40,23 @@
 				
 				if (password_verify($password, $wiersz['password']))
 				{
-					$_SESSION['zalogowany'] = true;
-					$_SESSION['id'] = $wiersz['id'];
-					$_SESSION['login'] = $wiersz['login'];
-					$_SESSION['email'] = $wiersz['email'];
-					
-					$rezultat->free_result();
-					$user_id = $_SESSION['id'];
+					$user_id = $wiersz['id'];
 					$response = array();
 					$response['user_id']=$user_id;
+					$rezultat->free_result();
 					header('Content-Type:application/json');
 					echo json_encode($response);
 				}
 				else 
 				{
-					$_SESSION['blad'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
-					header('Location: index.php');
+					error("Nieprawidłowy login lub hasło!",400);
+					exit();
 				}
 			}
 			else
 			{
-				$_SESSION['blad'] = '<span style = "color:red">Nieprawidłowy login lub hasło!</span>';
-				header('Location: index.php');
+				error("Nieprawidłowy login lub hasło!",400);
+				exit();
 			}
 		}
 		

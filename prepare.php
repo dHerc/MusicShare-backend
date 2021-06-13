@@ -1,4 +1,5 @@
 <?php
+require "error.php";
 $pwd =  htmlspecialchars($_POST["pass"]);
 require_once "KeePassPHP/keepassphp/keepassphp.php";
 use \KeePassPHP\KeePassPHP as KeePassPHP;
@@ -56,6 +57,8 @@ if($db!=null)
 	$db_user = substr($username,1,strlen($username)-2);
 	$db_password = substr($password,1,strlen($password)-2);
 	$db_name = substr($title,1,strlen($title)-2);
+	
+	require('connect.php');
 	mysqli_report(MYSQLI_REPORT_STRICT);
 	
 		
@@ -63,7 +66,8 @@ if($db!=null)
 	
 		if ($conn->connect_errno!=0)
 		{
-			die("Connection failed: ".$conn->connect_error);
+			error($conn->connect_errno,500);
+			exit();
 		}
 		
 		$sql = "CREATE TABLE users (
@@ -85,7 +89,7 @@ if($db!=null)
 		type TEXT NOT NULL,
 		access_token TEXT NOT NULL,
 		refresh_token TEXT,
-		FOREIGN KEY (user_id) REFERENCES users(id)
+		FOREIGN KEY (user_id) REFERENCES users(id) on delete cascade
 		);";
 		if($conn->query($sql) == TRUE){
 			echo "Table tokens created successfully </br>";
@@ -93,6 +97,36 @@ if($db!=null)
 		else{
 			echo "Error creating table tokens: ".$conn->error;
 		}
+		
+		$sql = "CREATE TABLE messages (
+		id INT(6) AUTO_INCREMENT PRIMARY KEY,
+		sender_id INT(6) NOT NULL,
+		receiver_id INT(6) NOT NULL,
+		song_id TEXT NOT NULL,
+		FOREIGN KEY (sender_id) REFERENCES users(id) on delete cascade,
+		FOREIGN KEY (receiver_id) REFERENCES users(id) on delete cascade
+		);";
+		if($conn->query($sql) == TRUE){
+			echo "Table messages created successfully </br>";
+		}
+		else{
+			echo "Error creating table messages: ".$conn->error;
+		}
+		
+		$sql = "CREATE TABLE friends (
+		id INT(6) AUTO_INCREMENT PRIMARY KEY,
+		user_id INT(6) NOT NULL,
+		friend_id INT(6) NOT NULL,
+		FOREIGN KEY (user_id) REFERENCES users(id) on delete cascade,
+		FOREIGN KEY (friend_id) REFERENCES users(id) on delete cascade
+		);";
+		if($conn->query($sql) == TRUE){
+			echo "Table friends created successfully </br>";
+		}
+		else{
+			echo "Error creating table friends: ".$conn->error;
+		}
+		
 		
 		$conn->close();
 ?>
