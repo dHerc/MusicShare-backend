@@ -476,3 +476,6 @@ composer.lock
 ##### Credentials
 *.cred
 connect.php
+
+##### Scripts
+*.ps1
