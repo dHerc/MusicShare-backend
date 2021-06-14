@@ -59,6 +59,7 @@ require "error.php";
 		id INT(6) AUTO_INCREMENT PRIMARY KEY,
 		user_id INT(6) NOT NULL,
 		friend_id INT(6) NOT NULL,
+		status TEXT NOT NULL,
 		FOREIGN KEY (user_id) REFERENCES users(id) on delete cascade,
 		FOREIGN KEY (friend_id) REFERENCES users(id) on delete cascade
 		);";
