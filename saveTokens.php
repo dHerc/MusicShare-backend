@@ -8,5 +8,5 @@ if(isset($_POST["access_token"]))
 	$access_token = $_POST["access_token"];
 if(isset($_POST["refresh_token"]))
 	$refresh_token = $_POST["refresh_token"];	
-save($_POST["user"],$_POST["type"],$access_token,$refresh_token);
+save($_POST["user"],$_POST["type"],$access_token,$refresh_token,true);
 ?>

@@ -1,7 +1,7 @@
 <?php
 require "error.php";
 require_once "connect.php";
-function save($user,$type,$access_token,$refresh_token)
+function save($user,$type,$access_token,$refresh_token,$exit)
 {
 	session_start();
 	header("Access-Control-Allow-Origin: *");
@@ -47,9 +47,12 @@ function save($user,$type,$access_token,$refresh_token)
 		exit();	
 	}
 	$conn->close();
-	$response = array();
-	$response["access_token"]=$access_token;
-	echo json_encode($response);
-	exit();
+	if($exit)
+	{
+		$response = array();
+		$response["access_token"]=$access_token;
+		echo json_encode($response);
+		exit();
+	}
 }
 ?>
