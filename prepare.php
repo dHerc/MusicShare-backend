@@ -16,7 +16,8 @@ require "error.php";
 		id INT(6) AUTO_INCREMENT PRIMARY KEY,
 		login TEXT NOT NULL,
 		password TEXT NOT NULL,
-		email TEXT NOT NULL
+		email TEXT NOT NULL,
+		fb_user_id TEXT
 		);";
 		if($conn->query($sql) == TRUE){
 			echo "Table users created successfully </br>";
