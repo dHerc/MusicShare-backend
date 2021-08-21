@@ -68,8 +68,7 @@ function main(){
         $tokens = getAccessToken($_POST["code"]);
 		$type = htmlspecialchars($_POST["type"]);
 		$user = $_POST["user"];
-		save($user,$type,$tokens["access_token"],$tokens["refresh_token"]);
-		exit();
+		save($user,$type,$tokens["access_token"],$tokens["refresh_token"],true);
     }
 	else
 		echo "error";
