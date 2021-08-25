@@ -57,6 +57,5 @@ if ($tokenResult === false || $resultCode !== 200) {
 		exit();
     }
 curl_close($ch);
-save($userID,$type,json_decode($tokenResult)->access_token,$refresh_token);
-exit();
+save($userID,$type,json_decode($tokenResult)->access_token,$refresh_token,true);
 ?>
