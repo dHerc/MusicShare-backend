@@ -108,7 +108,7 @@
 				{
 					//Hurra, wszystkie testy zaliczone, dodajemy gracza do bazy
 					
-					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$nick', '$haslo_hash', '$email', NULL)"))
+					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$nick', '$haslo_hash', '$email', NULL, NULL)"))
 					{
 						$rezultat = $polaczenie->query(sprintf("SELECT * FROM users WHERE login='$nick'"));
 						$wiersz = $rezultat->fetch_assoc();
