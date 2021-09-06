@@ -17,7 +17,8 @@ require "error.php";
 		login TEXT NOT NULL,
 		password TEXT NOT NULL,
 		email TEXT NOT NULL,
-		fb_user_id TEXT
+		fb_user_id TEXT,
+		google_user_id TEXT
 		);";
 		if($conn->query($sql) == TRUE){
 			echo "Table users created successfully </br>";

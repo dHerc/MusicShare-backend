@@ -8,11 +8,11 @@
 		exit();
 	}
 	
-	$polaczenie = @new mysqli($host,$db_user,$db_password,$db_name);
+	$connection = @new mysqli($host,$db_user,$db_password,$db_name);
 	
-	if($polaczenie->connect_errno!=0)
+	if($connection->connect_errno!=0)
 	{
-		error($polaczenie->connect_errno,500);
+		error($connection->connect_errno,500);
 		exit();
 	}
 	else
@@ -20,31 +20,31 @@
 		$email = $_POST['email'];
 		$fb_user_id = $_POST['fb_user_id'];
 		
-		if($rezultat = @$polaczenie->query(sprintf("SELECT * FROM users WHERE email='%s'",
-			mysqli_real_escape_string($polaczenie,$email))))
+		if($result = @$connection->query(sprintf("SELECT * FROM users WHERE email='%s'",
+			mysqli_real_escape_string($connection,$email))))
 		{
-			$ilu_userow = $rezultat->num_rows;
+			$ilu_userow = $result->num_rows;
 			if($ilu_userow>0)
 			{
 				
-				$wiersz = $rezultat->fetch_assoc();
+				$row = $result->fetch_assoc();
 				
-				$fb_id = $wiersz["fb_user_id"];
+				$fb_id = $row["fb_user_id"];
 				if(empty($fb_id))
 				{
-					if(!$polaczenie->query("update users set fb_user_id = '$fb_user_id' where email='$email'"))
-						error($polaczenie->error,500);
+					if(!$connection->query("update users set fb_user_id = '$fb_user_id' where email='$email'"))
+						error($connection->error,500);
 				}
 				else
 				{
 					if(strcmp($fb_id,$fb_user_id)!=0)
 						error("User with this email have different facebook user id attached",409);
 				}
-				$user_id = $wiersz['id'];
+				$user_id = $row['id'];
 				save($user_id,"Facebook",$_POST["access_token"],"",false);
 				$response = array();
 				$response['user_id']=$user_id;
-				$rezultat->free_result();
+				$result->free_result();
 				header('Content-Type:application/json');
 				echo json_encode($response);
 			}
@@ -54,7 +54,11 @@
 				exit();
 			}
 		}
+		else
+		{
+			error($polaczenie->error,500);
+		}
 		
-		$polaczenie->close();
+		$connection->close();
 	}
 ?>
