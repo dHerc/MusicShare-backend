@@ -59,6 +59,10 @@
 				exit();
 			}
 		}
+		else
+		{
+			error($polaczenie->error,500);
+		}
 		
 		$polaczenie->close();
 	}
